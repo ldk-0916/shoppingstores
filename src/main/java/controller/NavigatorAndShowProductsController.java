@@ -16,6 +16,8 @@ public class NavigatorAndShowProductsController {
     @RequestMapping("selectAllP_type")
     public List<String> selectAllP_type(){
         System.out.println("****************你好");
+        System.out.println("****************你好");
+        System.out.println("****************你好");
         return psi.selectAllP_type();
     }
 
