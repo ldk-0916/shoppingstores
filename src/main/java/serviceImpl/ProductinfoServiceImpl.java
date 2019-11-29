@@ -19,6 +19,11 @@ public class ProductinfoServiceImpl implements ProductionfoService {
     }
 
     @Override
+    public List<Productinfo> selectAllProductsByP_type(String p_type) {
+        return pfm.selectAllProductsByP_type(p_type);
+    }
+
+    @Override
     public int deleteByPrimaryKey(Integer pId) {
         return pfm.deleteByPrimaryKey(pId);
     }

@@ -268,7 +268,7 @@
     </div>
 </div>
 <%--全路径(绝对路径)--%>
-<iframe src="resource/shop/showProducts.jsp" id="myframe"></iframe>
+<iframe  id="myframe"></iframe>
 <img src="<%=basePath%>resource/images/top.png" id="topImg">
 
 <script type="text/javascript">
@@ -292,6 +292,10 @@
 
         $(".pieces").on("click",".future_ui__piece",function(){
            // alert($(this).children().children().children().text());
+
+            var type = $(this).children().children().children().text();
+            $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);
+
             $(".intro").hide();
             $("#myframe").show();
             $("#topImg").show();
@@ -301,6 +305,7 @@
             $(".intro").show();
             $("#myframe").hide();
             $("#topImg").hide();
+
         })
 
     })

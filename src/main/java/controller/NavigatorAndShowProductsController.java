@@ -1,7 +1,9 @@
 package controller;
 
+import entity.Productinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.ProductinfoServiceImpl;
 
@@ -16,10 +18,13 @@ public class NavigatorAndShowProductsController {
     @RequestMapping("selectAllP_type")
     public List<String> selectAllP_type(){
         System.out.println("****************你好");
-        System.out.println("****************你好");
-        System.out.println("****************你好");
         return psi.selectAllP_type();
+
     }
 
+    @RequestMapping("/selectAllProductsByP_type")
+        public List<Productinfo> selectAllProductsByP_type( @RequestParam String p_type){
+        return psi.selectAllProductsByP_type(p_type);
+    }
 
 }

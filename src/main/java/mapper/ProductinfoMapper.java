@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductinfoMapper {
 
     List<String> selectAllP_type();
+    List<Productinfo> selectAllProductsByP_type(String p_type);
 
     int deleteByPrimaryKey(Integer pId);
 
