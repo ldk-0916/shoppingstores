@@ -10,123 +10,114 @@
     <title></title>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="<%=basePath%>resource/js/sHover.min.js"></script>
-   <link rel="stylesheet" href="<%=basePath%>resource/css/example.css">
+    <script src="<%=basePath%>resource/js/modernizr.custom.js"></script>
+    <link href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resource/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resource/css/component.css" />
 
+
+    <style>
+
+        body{
+            background: #2A2B30;
+        }
+
+    </style>
 
 </head>
-<body id="body">
-<div id="part3" class="part">
-    <div class="container">
-
-
-
-    </div><!-- /container -->
+<body >
+<!-- Compare basket -->
+<div class="compare-basket">
+    <button class="action action--button action--compare"><i class="fa fa-check"></i><span class="action__text">Compare</span></button>
 </div>
+<!-- Main view -->
+<div class="view">
+    <!-- Product grid -->
+    <section class="grid">
+        <!-- Products -->
 
+
+
+    </section>
+</div><!-- /view -->
+
+
+
+
+
+<!-- product compare wrapper -->
+<section class="compare">
+    <button class="action action--close"><i class="fa fa-remove"></i><span class="action__text action__text--invisible">Close comparison overlay</span></button>
+</section>
+
+
+
+
+<script src="<%=basePath%>resource/js/classie.js"></script>
+<script src="<%=basePath%>resource/js/main.js"></script>
 
 <script>
     $(function(){
 
+        $.ajax({
+            url:"selectAllProductsByP_type",
+            type:"post",
+            data:{
+                "p_type":getQueryString("p_type")
+            },
+            success:function(data){
 
-  $.ajax({
-   url:"selectAllProductsByP_type",
-      type:"post",
-      data:{
-      "p_type":getQueryString("p_type")
-      },
-      success:function(data){
-       for(var i=0;i<data.length;i++){
-       var str="<div  class='sHoverItem'>" +
-           "    <img  src='"+data[i].pic+"'>" +
-           "    <span  class='sIntro'>" +
-           "<h2>"+data[i].pName+"</h2>" +
-           "<p>"+data[i].intro+"</p>" +
-           "<p>$"+data[i].price+"</p>"+
-           "<button>立即购买</button>" +
-           "<button pid='"+data[i].pId+"' class='addCart'>加入购物车</button>" +
-           "</span>" +
-           " </div>";
-           $(".container").append(str);
-       }
+                for(var i=0;i<data.length;i++){
+                    var str="<div class='product'>" +
+                        "            <div class='product__info'>" +
+                        "                <img class='product__image' src='<%=basePath%>resource/images/1.png' alt='Product 1' />" +
+                        "                <h3 class='product__title'>"+data[i].pName+"</h3>" +
+                        "                <span class='product__region extra highlight'>"+data[i].intro+"</span>" +
+                        "                <span class='product__price highlight'>"+data[i].price+"</span>" +
+                        "                <button class='action action--button action--buy' pid='"+data[i].pId+"'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart'>加入购物车</span></button>" +
+                        "            </div>" +
+                        "            <label class='action action--compare-add'><input class='check-hidden' type='checkbox' /><i class='fa fa-plus'></i><i class='fa fa-check'></i><span class='action__text action__text--invisible'>比较商品</span></label>'" +
+                        "        </div>";
 
-
-
-
-          var b=new sHover('head','headIntro');
-          var a=new sHover("sHoverItem","sIntro");
-          a.set({
-              slideSpeed:5,
-              opacityChange:true,
-              opacity:80
-          })
-
-          var example1Btn=document.getElementById('example1Btn');
-          var part1arrow=document.getElementById('part1arrow');
-          var example1=document.getElementById('example1');
-
-          var example2=new sHover('example2','intro2');
-          example2.set({
-              slideSpeed:7,
-              opacity:80,
-              opacityChange:true
-          });
-
-          var example2prev=new sHover('example2prev','intro2prev');
-          example2prev.set({
-          });
-
-      }
-  });
-
-  $(".container").on("click",".addCart",function(){
-      alert($(this).attr("pid"));
-  });
+                    $(".grid").append(str);
+                }
 
 
+                loadjscssfile("<%=basePath%>resource/js/classie.js","js");
+                loadjscssfile("<%=basePath%>resource/js/main.js","js");
+
+            }
+        });
 
 
+        $(".grid").on("click",".action",function(){
+            // alert($(this).attr("pid"));
 
 
+            var username="${cookie.username.value}";
+            alert(username);
+            if(username=="null"||username==""||username==undefined){
 
+                window.location.href="<%=basePath%>resource/login/login.jsp";
+            }else{
+                $.ajax({
+                    url:"addCar",
+                    type:"post",
+                    data:{
+                        "pid":$(this).attr("pid"),
+                        "username":getQueryString("username")
+                    },
+                    success:function (data) {
 
-
-
-
-
-
-
-
-
-
-
-
+                    }
+                })
+            }
+        });
 
 
     });
 
-    function scrollToBottom(a){
-        if(windowHeight()){
-            clearInterval(a.scrollTimer);
-            var scrollSpeed=100;
-            a.scrollTimer=setInterval(function(){
-                document.documentElement.scrollTop+=scrollSpeed;
-                document.body.scrollTop+=scrollSpeed;
-                if((document.documentElement.scrollTop>=(document.documentElement.scrollHeight-windowHeight()))||(document.body.scrollTop>=(document.documentElement.scrollHeight-windowHeight()))){
-                    clearInterval(a.scrollTimer);
-                }
-            },13);
-        }else{
-            //a.setAttribute('href', 'http://www.baidu.com');
-        }
-    }
-    function windowHeight(){
-        if(document.documentElement){
-            return document.documentElement.clientHeight;
-        }else{
-            return document.body.clientHeight;
-        }
-    }
+
 
     function getQueryString(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -143,19 +134,27 @@
             fileref.setAttribute("src", filename);//文件的地址
         }
         else if (filetype == "css") { //判定文件类型
-            alert("css");
             var fileref = document.createElement("link");
             fileref.setAttribute("rel", "stylesheet");
             fileref.setAttribute("type", "text/css");
             fileref.setAttribute("href", filename);
-            document.getElementsByTagName("head")[0].appendChild(fileref);
-               alert("拼接到head");
         }
-        // if (typeof fileref != "undefined")
-        //     document.getElementsByTagName("head")[0].appendChild(fileref);
+        if (typeof fileref != "undefined")
+            document.getElementsByTagName("head")[0].appendChild(fileref);
     }
 
-
+    // function getCookie(name){
+    //     var strcookie = document.cookie;//获取cookie字符串
+    //     var arrcookie = strcookie.split("; ");//分割
+    //     // 遍历匹配
+    //     for ( var i = 0; i < arrcookie.length; i++) {
+    //         var arr = arrcookie[i].split("=");
+    //         if (arr[0] == name){
+    //             return arr[1];
+    //         }
+    //     }
+    //     return "";
+    // }
 
 </script>
 

@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.UserServiceImpl;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,7 +49,7 @@ public class LoginAndRegisterController {
 
 
     @RequestMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest req){
+    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest req, HttpServletResponse resp){
         Userinfo ui = usi.selectByUsername(username);
         if (ui==null){
             //用户不存在
@@ -56,20 +57,33 @@ public class LoginAndRegisterController {
         }else{
           if (DigestUtils.md5Hex(password.getBytes()).equals(ui.getPassword())){
 
-             if (flag.equals("yes")){
                  ui.setPassword(password);
-                 HttpSession session = req.getSession();
-                 session.setAttribute("info",ui);
-                // System.out.println("****"+ui.getPassword());
-             }else{
-                 req.getSession().removeAttribute("info");
-             }
 
+                 Cookie cookieU = new Cookie("username",username);
+                 cookieU.setPath("/");
+                 cookieU.setMaxAge(5000);
+                 resp.addCookie(cookieU);
+
+                 Cookie cookieP = new Cookie("password",password);
+                 cookieP.setPath("/");
+                 cookieP.setMaxAge(5000);
+                 resp.addCookie(cookieP);
+
+                 if (flag.equals("yes")){
+                     Cookie cookie = new Cookie("flag","no");
+                     cookie.setMaxAge(5000);
+                          resp.addCookie(cookie);
+                 }else{
+                     Cookie cookie = new Cookie("flag","yes");
+                     cookie.setMaxAge(5000);
+                     resp.addCookie(cookie);
+                 }
               return "yes";
-          }else{
-              //System.out.println("登录失败");
+          }
+          else{
               return "no";
           }
+
         }
 
     }
