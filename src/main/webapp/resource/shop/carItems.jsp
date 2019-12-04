@@ -17,6 +17,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/resetcar.css">
+    <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/carts.css">
 
 
@@ -319,6 +320,7 @@
 
         $(".cartBox").on("click",".reduce",function(){
             if($(this).next().val()<=1){
+                $(this).next().val(parseInt($(this).next().val())-1);
                 $(this).parent().parent().parent().hide();
             }else{
                 $(this).next().val(parseInt($(this).next().val())-1);
