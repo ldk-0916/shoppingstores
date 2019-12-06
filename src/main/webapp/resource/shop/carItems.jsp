@@ -19,8 +19,6 @@
     <link rel="stylesheet" href="<%=basePath%>resource/css/resetcar.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/carts.css">
-
-
     <style>
 
         label .mark{
@@ -119,6 +117,8 @@
     </style>
 </head>
 <body>
+
+
 <section class="cartMain">
 
     <div class="cartMain_hd">
@@ -408,7 +408,6 @@
             $("#big").hide();
             $("#MyDiv").hide();
 
-
             var labels=$("label[id!='firstLabel']label[class='mark']");
             for(var i=0;i<labels.length;i++){
 
@@ -436,6 +435,13 @@
                         "username":getCookie("username"),
                         "pid":labels.eq(i).attr("pid"),
                         "pnum":labels.eq(i).attr("pnum")
+                    },
+                    success:function(data){
+                        if(data=="yes"){
+                            alert("购买成功")
+                        }else{
+                            alert("购买失败")
+                        }
                     }
 
                 });

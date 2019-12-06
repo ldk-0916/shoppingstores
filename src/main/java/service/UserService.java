@@ -5,8 +5,11 @@ import entity.Userinfo;
 
 public interface UserService {
 
+    int selectUidByUsername(String username);
 
     Userinfo selectByUsername(String username);
+
+    String selectEmailByUsername(String username);
 
     int deleteByPrimaryKey(Integer uId);
 

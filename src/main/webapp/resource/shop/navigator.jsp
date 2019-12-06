@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <link rel="stylesheet" href="<%=basePath%>resource/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
    <style>
@@ -42,6 +43,13 @@
 
 </head>
 <body>
+<div class="search d1">
+    <form>
+        <input type="text" placeholder="搜索从这里开始...">
+        <button type="submit"></button>
+    </form>
+</div>
+
 <div class='intro'>
     <div class='center'>
         <div class='core'></div>

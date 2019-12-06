@@ -12,6 +12,10 @@
     U_ID, USERNAME, PASSWORD, EMAIL, REGISTER_TIME
   </sql>
 
+  <select id="selectUidByUsername" resultType="java.lang.Integer">
+    select u_id from userinfo where username=#{username}
+  </select>
+
   <select id="selectByUsername" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/> from userinfo where username = #{username,jdbcType=VARCHAR}
   </select>
@@ -21,6 +25,10 @@
     <include refid="Base_Column_List" />
     from USERINFO
     where U_ID = #{uId,jdbcType=DECIMAL}
+
+  </select>
+  <select id="selectEmailByUsername" resultType="java.lang.String">
+    select email from userinfo where username=#{username,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from USERINFO

@@ -72,7 +72,7 @@ public class LoginAndRegisterController {
                  if (flag.equals("yes")){
                      Cookie cookie = new Cookie("flag","no");
                      cookie.setMaxAge(5000);
-                          resp.addCookie(cookie);
+                     resp.addCookie(cookie);
                  }else{
                      Cookie cookie = new Cookie("flag","yes");
                      cookie.setMaxAge(5000);

@@ -1,20 +1,35 @@
 package Aspect;
 
+import entity.Orderdetail;
+import entity.Orderinfo;
+import entity.Userinfo;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.springframework.beans.factory.annotation.Autowired;
+import serviceImpl.OrderdetailServiceImpl;
+import serviceImpl.OrderinfoServiceImpl;
+import serviceImpl.UserServiceImpl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class OrderAspect {
-    /*
-     * 前置通知
-     * */
+
+    @Autowired
+    OrderinfoServiceImpl oisi;
+
+    @Autowired
+    OrderdetailServiceImpl odsi;
+
+    @Autowired
+    UserServiceImpl usi;
+
     public void beforeCheck(JoinPoint joinPoint) {
         Signature sig=joinPoint.getSignature();
-
-        System.out.println("before at "+sig.getName()+"and arg[0] is "+joinPoint.getArgs()[0]);
-
+        //+joinPoint.getArgs()[0]
+        System.out.println("before at "+sig.getName()+"and arg[0] is ");
     }
-
     /*
      *后置通知
      *无法获取返回值 。可以通过返回通知获取返回值
@@ -22,8 +37,8 @@ public class OrderAspect {
      * */
     public void afterCheck(JoinPoint joinPoint) {
         Signature sig=joinPoint.getSignature();
-
-        System.out.println("After at "+sig.getName()+"and arg[0] is "+joinPoint.getArgs()[0]);
+        //+joinPoint.getArgs()[0]
+        System.out.println("After at "+sig.getName()+"and arg[0] is ");
 
     }
 
@@ -31,6 +46,32 @@ public class OrderAspect {
      * 返回通知
      * */
     public void afterReturn(JoinPoint joinPoint,Object res) {
+
+        if(res.toString().equals("yes")){
+
+            Orderinfo oi = new Orderinfo();
+            Userinfo ui = new Userinfo();
+            Orderdetail od = new Orderdetail();
+            oi.setUserid(usi.selectUidByUsername((String) joinPoint.getArgs()[0]));
+            oi.setStatus(0);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            oi.setOrdertime(sdf.format(date));
+
+            //Long time = System.currentTimeMillis();
+            int randomNum = (int) ((Math.random() * 9 + 1) * 100000);
+            //String realNum = time+""+randomNum;
+            oi.setPid(randomNum);
+
+            od.setOdId(randomNum);
+            od.setpId((Integer) joinPoint.getArgs()[1]);
+            od.setOdNum((Integer) joinPoint.getArgs()[2]);
+
+            oisi.insert(oi);
+            odsi.insert(od);
+        }
+
+
         Signature sig=joinPoint.getSignature();
         System.out.println("After at "+sig.getName()+"return. res= "+res);
 
@@ -62,7 +103,8 @@ public class OrderAspect {
 
         System.out.println(methodName+" 执行前(前置通知)");
         try {
-
+            System.out.println("aaa-----"+pJoinPoint);
+            System.out.println("aaa-----"+pJoinPoint.proceed());
             res=pJoinPoint.proceed();
             System.out.println(methodName+" 执行后有结果(返回通知)");
         } catch (Throwable e) {
