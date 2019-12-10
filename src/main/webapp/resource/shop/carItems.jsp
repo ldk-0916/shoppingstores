@@ -193,6 +193,7 @@
     var flag=true;
     $(function (){
 
+
         $.ajax({
             url:"getCar",
             type:"post",
@@ -397,7 +398,6 @@
                 success:function(data){
                     checkCode=data;
 
-
                 }
             })
         })
@@ -426,6 +426,7 @@
                     }
 
                 });
+
 
 
                 $.ajax({

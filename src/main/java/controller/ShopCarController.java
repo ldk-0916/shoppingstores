@@ -22,6 +22,8 @@ import java.util.*;
 @RestController
 public class ShopCarController {
 
+
+    //在当前环境下，Jedis连接就是资源，JedisPool管理的就是Jedis连接。
     @Autowired
     JedisPool jedisPool;
 
@@ -35,9 +37,9 @@ public class ShopCarController {
         //购物车存储结构
         //redis的hmset存储:hmset是一个map集合,该集合的key存储的username(用户名)
         //value存储一个map集合,其中这个map集合的key存储pid(商品唯一标识),value存储
-        //的是用户购物车每个商品的数量
+        //的是用户购物车每个商品的数量(pnum)
         Jedis jedis = jedisPool.getResource();
-        //判断用户购物车有没有商品:hgetAll通过用户名得到value
+        //判断用户购物车有没有商品:hgetAll通过用户名得到value(vaalue=Map<String, String> map)
         //1.1如果value不为空,说明有商品,直接添加
         //1.2如果value为空,那么需要创建一个map集合
 
@@ -156,7 +158,7 @@ public class ShopCarController {
 
     }
     @RequestMapping("deleteProductNum")
-    //枷锁处理并发问题()
+    //加锁处理并发问题()
     public synchronized String deleteProductNum(@RequestParam String username,@RequestParam Integer pid,@RequestParam Integer pnum){
         Productinfo pi = psi.selectByPrimaryKey(pid);
         if (pi.getpNum()>=pnum){
